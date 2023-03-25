@@ -107,12 +107,12 @@ int main() {
 
 		while (pref_list_ss.good()) { //Sticking the long input into vectors, copied from above
 			while (pref_list_ss.peek() == ' ') { //Skip spaces
-				pref_list_ss.get(); 
+				pref_list_ss.get();
 			}
 			getline(pref_list_ss, substr, ','); //Get the value and store into temp int vector
-			int_pref_list_temp.push_back(stoi(substr)-1); //This -1 is to make it consistent with vectors (0 to n-1)
+			int_pref_list_temp.push_back(stoi(substr) - 1); //This -1 is to make it consistent with vectors (0 to n-1)
 		}
-		
+
 		/* Test to see if SS list appending is working
 
 		for (int i = 0; i < int_pref_list_temp.size(); i++) {
@@ -148,7 +148,7 @@ int main() {
 				pref_list_ss.get();
 			}
 			getline(pref_list_ss, substr, ',');
-			int_pref_list_temp.push_back(stoi(substr)-1);
+			int_pref_list_temp.push_back(stoi(substr) - 1);
 		}
 
 		girl_pref_list.push_back(int_pref_list_temp);
@@ -162,7 +162,7 @@ int main() {
 	cout << "Outputting Graph for Boy Preferences" << endl << endl; //This is simply a bunch of formatting cout statments
 	cout << setw(15) << left << "Pref Rank";
 	for (int i = 0; i < girl_names.size(); i++) {
-		cout << setw(15) << left << i+1;
+		cout << setw(15) << left << i + 1;
 	}
 
 	cout << endl;
@@ -176,7 +176,7 @@ int main() {
 		cout << boy_names[i] << setw(1) << "|" << setw(15);
 
 		for (int j = 0; j < boy_pref_list[i].size(); j++) {
-			cout << setw(15) << left << girl_names[boy_pref_list[i][j]]; 
+			cout << setw(15) << left << girl_names[boy_pref_list[i][j]];
 		}
 		cout << endl;
 	}
@@ -189,7 +189,7 @@ int main() {
 	cout << "Outputting Graph for Girl Preferences" << endl << endl;
 	cout << setw(15) << left << "Pref Rank";
 	for (int i = 0; i < boy_names.size(); i++) {
-		cout << setw(15) << left << i+1;
+		cout << setw(15) << left << i + 1;
 	}
 
 	cout << endl;
@@ -212,7 +212,7 @@ int main() {
 	//--------------------------------Section 4------------------------------------------
 	//Gale-Shalpey Algorithm here
 
-	vector<int> boys_to_match; 
+	vector<int> boys_to_match;
 	vector<int> girl_matches;
 	int curr_boy = 0;
 	int curr_boy_placement = 0;
@@ -251,15 +251,17 @@ int main() {
 					girl_matches[boy_pref_list[curr_boy][counter]] = curr_boy; //Match girl to current boy
 					boys_to_match.push_back(contestant); //Re-enter the boy that was unmatched to be matched again
 					matched = true;
+					boy_pref_list[curr_boy].erase(boy_pref_list[curr_boy].begin()); //This removes the girl from the boy's preference list so if viewed later, the girl won't be re-looked at (again)
 
 				}
 				else {
 					counter = counter + 1; //If the girl likes her current match more, then we move on to the girl the boy likes next most
 				}
 
-				boy_pref_list[curr_boy].erase(boy_pref_list[curr_boy].begin()); //This removes the girl from the boy's preference list so if viewed later, the girl won't be re-looked at (again)
+				//boy_pref_list[curr_boy].erase(boy_pref_list[curr_boy].begin()); //This removes the girl from the boy's preference list so if viewed later, the girl won't be re-looked at (again)
 				//This is here because regardless of match or not, it has failed so it can never succeed again
-
+				//Never mind this is wrong, this belongs up in the if statement
+				//Why is this in the if statement but not in the else statement?
 			}
 
 		}
@@ -275,5 +277,5 @@ int main() {
 	for (int i = 0; i < num_people; i++) {
 		cout << girl_names[i] << " and " << boy_names[girl_matches[i]] << endl;
 	}
-	
+
 }
